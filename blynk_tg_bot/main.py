@@ -12,14 +12,30 @@ import aiohttp
 from aiogram.client.session.aiohttp import AiohttpSession
 # import json
 from aiogram.utils.markdown import text, bold, italic, code, pre
+import logging
+import sys
+from os import getenv
+from settings import get_sets
+# from settings import *
+
+
+TOKEN = getenv("TOKEN")
+TOKEN_PAY = getenv("TOKEN_PAY")
+ADMIN_ID = getenv("ADMIN_ID")
+APP_BASE_URL = getenv("APP_BASE_URL")
+
+print('TOKEN', TOKEN)
+print('TOKEN_PAY', TOKEN_PAY)
+print('ADMIN_ID', ADMIN_ID)
+print('APP_BASE_URL', APP_BASE_URL)
 
 
 router = Router()
 
 region = "62"
 href_weather = f'https://yandex.com/time/sync.json?geo={region}'
-img_led_on  = '  ON  🔴 '  # ⚪  🌕🟡
-img_led_off = ' OFF  🟢 '  # 🔵   🌑
+img_led_on  = '  ON  🌕 '  
+img_led_off = ' OFF  🟢 '  
 
 API_TOKEN = '6909476636:AAGsmlwshjrFSun6vOglJ11Lk3UHOX8RLWs'  # "6349601788:AAGgrNqYBhyvIBHJnFEN_RBljR4BYJMdhxY"
 BLYNK_TOKEN = 'fu9VBk46dSwdxjxKdgG3A0pMvHyOj2U1'
@@ -85,8 +101,8 @@ names_btns = [
     ]
 
 names_btns2 = [
-    "Led Warm UP", "Led Warm DOWN",
-    "Led Cold UP", "Led Cold DOWN"
+    "Light_1  +", "Light_1  -",
+    "Light_2  +", "Light_2  -"
     ]
 
 
@@ -94,12 +110,12 @@ names_btns2 = [
 def keyboard_rels2():
     builder = ReplyKeyboardBuilder()
     for i in range(len(names_btns2)):       
-    #     btn_rels[i].img = img_led_on if btn_rels[i].urlstate else img_led_off
+       # btn_rels[i].img = img_led_on if btn_rels[i].urlstate else img_led_off
         # btn_rels[i].update()
         # btn_rels[i].name = 'Rel_' + btn_rels[i].id + btn_rels[i].img
         builder.button(text= f'{names_btns2[i]}')
         builder.adjust(2)
-    return builder.as_markup(resize_keyboard=True, one_time_keyboard=False, input_field_placeholder='leds ')
+    return builder.as_markup(resize_keyboard=True, one_time_keyboard=False, input_field_placeholder='кнопки... ')
 
 
 def keyboard_rels():
@@ -224,6 +240,7 @@ async def start():
 
 
 if __name__ == "__main__":
+    logging.basicConfig(level=logging.INFO, stream=sys.stdout)
     asyncio.run(start())        
 
 
